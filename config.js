@@ -2,8 +2,8 @@
 // Both values below are safe to put in front-end code. Never put a "secret" or "service_role" key here.
 // Find them in Supabase: Project Settings > API Keys (Project URL, and the Publishable key, or the legacy anon key).
 window.APP_CONFIG = {
-  SUPABASE_URL: "https://YOUR-PROJECT-REF.supabase.co",
-  SUPABASE_KEY: "YOUR_PUBLISHABLE_KEY",
+  SUPABASE_URL: "https://gnwxijfuutzmughwuehc.supabase.co",
+  SUPABASE_KEY: "sb_publishable_tZdywL71mVBlc5VnbIdPtQ_OCe_U-x6",
 
   // How people sign in:
   //   "password"  = email + password, accounts created by you in Supabase (no email service needed). Recommended.
