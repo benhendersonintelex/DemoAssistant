@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Demo Assistant</title>
+<title>Demo Pacer</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%E2%8F%B1%EF%B8%8F%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -220,6 +220,55 @@ dialog form{display:flex;flex-direction:column;gap:14px}
   .flash.on{animation:none;background:var(--flashB)}
   #run.urgent #segTime{animation:none}
 }
+
+/* ---------- trials module ---------- */
+#trialsView{max-width:1040px;margin:0 auto;padding:28px 20px 64px}
+#tvHead .libhead{margin-bottom:14px}
+.subtabs{display:flex;gap:2px;flex-wrap:wrap;border-bottom:1px solid var(--line);margin:18px 0 22px}
+.subtabs button{background:none;border:0;padding:9px 12px;cursor:pointer;color:var(--muted);font-weight:500;border-radius:8px 8px 0 0}
+.subtabs button[aria-current="page"]{color:var(--ink);box-shadow:inset 0 -3px 0 var(--accent)}
+.filters{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:6px}
+.sel,.fld textarea,.crit textarea{background:var(--field);border:1px solid var(--line);border-radius:8px;padding:8px 11px;color:var(--ink);min-height:40px}
+.fld textarea,.crit textarea{width:100%;line-height:1.5;resize:vertical}
+.filters input.sel{min-width:260px}
+.hdot{display:inline-block;width:11px;height:11px;border-radius:50%;background:var(--ok);flex:none}
+.hdot.amber{background:var(--warn)}.hdot.red{background:var(--bad)}
+.badge.ok{border-color:var(--ok);color:var(--ok)}
+.badge.bad{border-color:var(--bad);color:var(--bad)}
+.badge.warnb{border-color:var(--warn);color:var(--warn)}
+.flag{font-size:.8rem;font-weight:600}
+.flag.warn{color:var(--warn)}.flag.bad{color:var(--bad)}
+a.ghost{text-decoration:none;display:inline-flex;align-items:center;padding:6px 12px;min-height:36px;color:var(--ink);border:1px solid var(--line);border-radius:10px}
+a.link{color:var(--accent);text-decoration:underline;text-underline-offset:2px}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-bottom:12px}
+@media (max-width:620px){.grid2{grid-template-columns:1fr}}
+.tick{display:flex;gap:10px;align-items:flex-start;padding:5px 0;cursor:pointer;font-size:.95rem}
+.tick input{width:18px;height:18px;margin-top:2px;accent-color:var(--accent);flex:none}
+.score{display:flex;gap:12px;flex-wrap:wrap;margin:6px 0 16px}
+.stat{border:1px solid var(--line);border-radius:12px;padding:10px 16px;min-width:130px;background:var(--panel)}
+.stat b{display:block;font-size:1.5rem;line-height:1.2;font-variant-numeric:tabular-nums}
+.stat span{color:var(--muted);font-size:.8rem}
+.stat.bad b{color:var(--bad)}.stat.warn b{color:var(--warn)}
+.banner.ok{border-color:var(--ok)}
+h3.grp{font-size:.85rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:18px 0 4px}
+.crit{padding:12px 0;border-bottom:1px solid var(--line)}
+.crittop{display:flex;justify-content:space-between;gap:12px;align-items:center}
+.crittop .ghost{padding:4px 12px;min-height:32px}
+.critctl{display:grid;grid-template-columns:150px minmax(0,1fr);gap:10px;margin-top:8px;align-items:start}
+@media (max-width:620px){.critctl{grid-template-columns:1fr}}
+.res-pass{border-color:var(--ok);color:var(--ok)}
+.res-partial{border-color:var(--warn);color:var(--warn)}
+.res-fail{border-color:var(--bad);color:var(--bad)}
+.logrow{font-size:.86rem;color:var(--muted);padding:5px 0;border-bottom:1px solid var(--line)}
+.item .body{white-space:pre-wrap;margin-top:2px}
+.item .acts .tick{padding:2px 6px}
+.hint2{font-weight:400;font-size:.78rem;color:var(--muted)}
+dialog.fdlg{width:min(560px,94vw);max-height:90vh;overflow:auto}
+dialog.fdlg form{display:flex;flex-direction:column;gap:12px}
+dialog.fdlg h2{margin:0}
+dialog.fdlg .chk{min-height:30px}
+.detail ul li{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.detail .ghost{padding:3px 10px;min-height:30px;font-size:.82rem}
 </style>
 </head>
 <body>
@@ -228,14 +277,14 @@ dialog form{display:flex;flex-direction:column;gap:14px}
 
 <div id="vConfig" class="center" hidden>
   <div class="authbox">
-    <h1>Demo Assistant</h1>
+    <h1>Demo Pacer</h1>
     <p class="sub" id="configMsg"></p>
   </div>
 </div>
 
 <div id="vAuth" class="center" hidden>
   <div class="authbox">
-    <h1>Demo Assistant</h1>
+    <h1>Demo Pacer</h1>
     <p class="sub" id="authIntro"></p>
 
     <div id="authPassword" hidden>
@@ -276,10 +325,12 @@ dialog form{display:flex;flex-direction:column;gap:14px}
 
 <div id="vApp" hidden>
   <header class="appbar">
-    <div class="brand">Demo Assistant</div>
+    <div class="brand">Demo Pacer</div>
     <nav id="tabs" aria-label="Sections">
       <button type="button" data-tab="mine">My demos</button>
       <button type="button" data-tab="team">Team demos</button>
+      <button type="button" data-tab="trials">Trials</button>
+      <button type="button" data-tab="envs">Environments</button>
       <button type="button" data-tab="history">My history</button>
       <button type="button" data-tab="teamruns" id="tabLead" hidden>Team runs</button>
     </nav>
@@ -357,6 +408,11 @@ dialog form{display:flex;flex-direction:column;gap:14px}
         <p id="summary" class="summary"></p>
       </aside>
     </div>
+  </main>
+
+  <main id="trialsView" hidden>
+    <div id="tvHead"></div>
+    <div id="tvBody"></div>
   </main>
 </div>
 
@@ -627,16 +683,21 @@ dialog form{display:flex;flex-direction:column;gap:14px}
   var run = null;
 
   function showView(v){
-    var inApp = (v === 'library' || v === 'editor');
+    var inApp = (v === 'library' || v === 'editor' || v === 'trials');
     $('#vBoot').hidden = v !== 'boot';
     $('#vAuth').hidden = v !== 'auth';
     $('#vApp').hidden = !inApp;
     $('#library').hidden = v !== 'library';
     $('#setup').hidden = v !== 'editor';
+    $('#trialsView').hidden = v !== 'trials';
     $('#run').hidden = v !== 'run';
     state.view = v;
+    markTabs();
     if(v === 'library') renderLibrary();
     window.scrollTo(0,0);
+  }
+  function markTabs(){
+    $$('#tabs button').forEach(function(b){ b.setAttribute('aria-current', b.dataset.tab === state.tab ? 'page' : 'false'); });
   }
   function ownerName(id){
     if(state.user && id === state.user.id) return 'You';
@@ -730,6 +791,7 @@ dialog form{display:flex;flex-direction:column;gap:14px}
   function onSignedOut(){
     state.user = null; state.profile = null; state.profiles = {}; state.plans = []; state.runs = [];
     current = null; cfg = defaultsPlan();
+    if(window.DPTrials) window.DPTrials.reset();
     if(run){ cleanupRun(); }
     $('#authStep2').hidden = true; authMsg('');
     showAuth();
@@ -741,6 +803,8 @@ dialog form{display:flex;flex-direction:column;gap:14px}
     try{ history.replaceState(null, '', location.pathname + location.search); }catch(e){}
     showView('boot');
     await refreshAll();
+    if(window.DPTrials) window.DPTrials.init(trialsApi);
+    state.tab = 'mine';
     showView('library');
   }
 
@@ -911,9 +975,18 @@ dialog form{display:flex;flex-direction:column;gap:14px}
 
   $('#tabs').addEventListener('click', async function(e){
     var b = e.target.closest('button[data-tab]'); if(!b) return;
-    state.tab = b.dataset.tab;
+    var tab = b.dataset.tab;
+    if(tab === 'trials' || tab === 'envs'){
+      if(!window.DPTrials){ toast('The trials module did not load. Check that trials.js is next to index.html.'); return; }
+      if(state.view === 'editor'){ await savePlan(); current = null; }
+      state.tab = tab;
+      showView('trials');
+      window.DPTrials.show(tab, true);
+      return;
+    }
+    state.tab = tab;
     if(state.view === 'editor'){ await leaveEditor(); }
-    else renderLibrary();
+    else showView('library');
     if(state.tab === 'history' || state.tab === 'teamruns'){ loadRuns().then(function(){ if(state.view==='library') renderLibrary(); }, function(){}); }
     if(state.tab === 'team'){ loadPlans().then(function(){ if(state.view==='library') renderLibrary(); }, function(){}); }
   });
@@ -1688,6 +1761,8 @@ dialog form{display:flex;flex-direction:column;gap:14px}
   /* =====================================================================
      BOOT
      ===================================================================== */
+  var trialsApi = {sb:sb, state:state, el:el, toast:toast, clean:clean, ownerName:ownerName};
+
   sb.auth.onAuthStateChange(function(ev, session){
     // Defer: do not call Supabase from inside this callback.
     setTimeout(function(){
@@ -1702,5 +1777,6 @@ dialog form{display:flex;flex-direction:column;gap:14px}
   }, function(){ if(!state.user) showAuth('Could not reach the server. Check your connection and reload.'); });
 })();
 </script>
+<script src="trials.js"></script>
 </body>
 </html>
